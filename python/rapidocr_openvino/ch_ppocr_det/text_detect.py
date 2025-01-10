@@ -26,10 +26,8 @@ from .utils import DBPostProcess, DetPreProcess
 
 class TextDetector:
     def __init__(self, config: Dict[str, Any]):
-        self.limit_side_len = config.get("limit_side_len")
-        self.limit_type = config.get("limit_type")
-        self.mean = config.get("mean")
-        self.std = config.get("std")
+        self.limit_type = config.get("limit_type", "min")
+        self.limit_side_len = config.get("limit_side_len", 736)
         self.preprocess_op = None
 
         post_process = {
@@ -71,7 +69,7 @@ class TextDetector:
             limit_side_len = 1500
         else:
             limit_side_len = 2000
-        return DetPreProcess(limit_side_len, self.limit_type, self.mean, self.std)
+        return DetPreProcess(limit_side_len, self.limit_type)
 
     def filter_tag_det_res(
         self, dt_boxes: np.ndarray, image_shape: Tuple[int, int]
